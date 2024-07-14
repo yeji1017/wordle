@@ -4,12 +4,20 @@ let attempts = 0;
 
 function appStart() {
   const displayGameover = () => {
+    //1. 안내문구1
     const div = document.createElement("div");
     div.innerText = "게임이 종료되었습니다";
     //직접 css (지양하는방법)
     div.style =
-      " display: flex; justify-content: center; align-items: center; position:absolute; top:40vh; left:38vw;  background-color: white;";
+      " display: flex; justify-content: center; align-items: center; position:absolute; top:40vh; left:42vw;  background-color: white;";
     document.body.appendChild(div);
+    //2. 안내문구2
+    // 키보드 UI에 '정답입니다' 표시
+    const keyboardMessage = document.createElement("div");
+    keyboardMessage.innerText = "정답입니다";
+    keyboardMessage.style =
+      "display: flex; justify-content: center; align-items: center; position:absolute; top:80vh; left:42vw; background-color: yellow; color: black; padding: 30px; border-radius: 5px;";
+    document.body.appendChild(keyboardMessage);
   }; // `displayGameover` 함수 끝나는 중괄호 추가
 
   const gameover = () => {
@@ -37,13 +45,12 @@ function appStart() {
       //console.log("입력한 글자 : ", 입력한_글자, "정답_글자 : ", 정답_글자);
       if (입력한_글자 === 정답_글자) {
         맞은_갯수 += 1;
-        block.style.background = "#67B360";
+        block.classList.add("correct");
       } else if (정답.includes(입력한_글자)) {
-        block.style.background = "#C9B458";
+        block.classList.add("wrong");
       } else {
         block.style.background = "#777e7f";
       }
-      block.style.color = "white";
     } // for 루프 끝나는 중괄호
 
     if (맞은_갯수 === 5) gameover(); //게임이 종료되면 이벤트리스너를지우자!
@@ -102,7 +109,29 @@ function appStart() {
     //console.log(timer); //setInterval의 id로 게임오버일떄 clear
   };
   startTimer();
+
+  const handleClick = (event) => {
+    // 클릭된 요소의 data-key 값을 대문자로 가져옵니다.
+    const key = event.target.dataset.key.toUpperCase();
+    if (!key) return; // 키가 없으면 반환
+    if (key === "ENTER") {
+      handleEnterKey(); // ENTER 키 클릭 시 handleEnterKey 호출
+    } else if (key === "BACK") {
+      handleBackspace(); // BACK 키 클릭 시 handleBackspace 호출
+    } else {
+      // 다른 키 클릭 시 keyCode 값을 계산하고 handleKeydown 호출
+      const keyCode = key.charCodeAt(0);
+      handleKeydown({ key, keyCode });
+    }
+  };
+
   window.addEventListener("keydown", handleKeydown);
+
+  // 모든 키보드 버튼에 클릭 이벤트 리스너를 추가
+  const keys = document.querySelectorAll(".keyboard-column");
+  keys.forEach((key) => {
+    key.addEventListener("click", handleClick);
+  });
 }
 
 appStart();
