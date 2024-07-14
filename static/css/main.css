@@ -1,0 +1,32 @@
+/* row랑 bolock 간격 모두 띄우기위해서는 main에 gap 줘야함 */
+/* .main {} (X) : main은 유니크 */
+main {
+  display: flex;
+  flex-direction: column; /* flex의배치를 상하로! (row를 옆으로만 x, 밑으로 위치시키기위해) */
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+/*
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+  */
+.board-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px; /* row끼리의 간격!! */
+}
+
+.board-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #d3d6da;
+  width: 60px;
+  height: 60px; /* 안주니 상자들이 납작*/
+}
